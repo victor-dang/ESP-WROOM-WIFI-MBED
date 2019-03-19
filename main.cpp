@@ -102,13 +102,14 @@ void sendpage()
 // WEB page data
     strcpy(webbuff, "<!DOCTYPE html>");
     strcat(webbuff, "<html><head><title>IISEC - Matsui Lab</title><meta charset=\"UTF-8\"></head>");
+    //strcat(webbuff, "<html><head><title>IISEC - Matsui Lab</title></head>");
     strcat(webbuff, "<body>");
     //strcat(webbuff, "<div style=\"text-align:center; background-color:#F4F4F4; color:#00AEDB;\"><h1>ESP-WROOM-02 and LPC7168 Web Server</h1>");
     strcat(webbuff, "<div style=\"text-align:center; background-color:#F4F4F4; color:#00AEDB;\"><h1>情報セキュリティ大学院 - 松井研 - 2019</h1>");
     strcat(webbuff, "<br><h1>ESP-WROOM-02 and LPC7168 Web Server</h1>");
-    strcat(webbuff, "</div><br /><hr>");
+    strcat(webbuff, "</div><br /><hr>\r\n");
 
-    strcat(webbuff, "<form method=\"POST\"> <strong> &nbsp&nbsp");
+    strcat(webbuff, "<p><form method=\"POST\"><strong>");
     if(led1==0) {
         strcat(webbuff, "<p><input type=\"radio\" name=\"led1\" value=\"0\" checked>  LED 1 off");
         strcat(webbuff, "<br><input type=\"radio\" name=\"led1\" value=\"1\" >  LED 1 on");
@@ -242,7 +243,7 @@ void ReadWebData()
 void startserver()
 {
 
-    pc.printf("++++++++++ Resetting ESP-WROOM-02 ++++++++++\r\n");
+    /*pc.printf("++++++++++ Resetting ESP-WROOM-02 ++++++++++\r\n");
     strcpy(cmdbuff,"AT+RST\r\n");
     timeout=8000;
     getcount=1000;
@@ -250,6 +251,7 @@ void startserver()
     getreply();
     pc.printf(replybuff);
     pc.printf("%d",counter);
+    */
     if (strstr(replybuff, "OK") != NULL) {
         pc.printf("\n++++++++++ Starting Server ++++++++++\r\n");
         strcpy(cmdbuff, "AT+CIPMUX=1\r\n");  // set multiple connections.
