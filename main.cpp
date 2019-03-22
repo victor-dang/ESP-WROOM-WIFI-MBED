@@ -69,10 +69,10 @@ int main()
     wait(0.5);
     reset=1;
     led1=0,led2=0,led3=0;
-    timeout=6000;
-    getcount=6000;
+    timeout=10;
+    getcount=10;
     getreply();
-    wroom.baud(115200);   // ESP-WROOM-02 baudrate.
+    wroom.baud(115200);   // ESP-WROOM-02 baudrate. Maximum on KLxx' is 115200, 230400 works on K20 and K22F
     WROOMconfig(); 
     
     
@@ -102,12 +102,10 @@ void sendpage()
 // WEB page data
     strcpy(webbuff, "<!DOCTYPE html>");
     strcat(webbuff, "<html><head><title>IISEC - Matsui Lab</title><meta charset=\"UTF-8\"></head>");
-    //strcat(webbuff, "<html><head><title>IISEC - Matsui Lab</title></head>");
     strcat(webbuff, "<body>");
-    //strcat(webbuff, "<div style=\"text-align:center; background-color:#F4F4F4; color:#00AEDB;\"><h1>ESP-WROOM-02 and LPC7168 Web Server</h1>");
-    strcat(webbuff, "<div style=\"text-align:center; background-color:#F4F4F4; color:#00AEDB;\"><h1>情報セキュリティ大学院 <br> 松井研 - 2019</h1>");
-    strcat(webbuff, "<br><h1>ESP-WROOM-02 and LPC7168 Web Server</h1>");
-    strcat(webbuff, "</div><br /><hr>\r\n");
+    strcat(webbuff, "<div style=\"text-align:center; background-color:#FBFEFC; color:#040712;\"><h1>情報セキュリティ大学院 <br> 松井研 - 2019</h1>");
+    strcat(webbuff, "<br><h1>ESP-WROOM-02 and LPC7168 Webサーバー</h1>");
+    strcat(webbuff, "</div><br /><hr><hr>\r\n");
 
     strcat(webbuff, "<p><div align=\"center\"><form method=\"POST\"><strong>");
     if(led1==0) {
@@ -132,14 +130,14 @@ void sendpage()
         strcat(webbuff, "<br><input type=\"radio\" name=\"led3\" value=\"1\" checked>  LED 3 on");
     }
 
-    strcat(webbuff, "</strong><p><input type=\"submit\" value=\"send\" style=\"background: #3498db;");
-    strcat(webbuff, "background-image:-webkit-linear-gradient(top, #3498db, #2980b9);");
-    strcat(webbuff, "background-image:linear-gradient(to bottom, #3498db, #2980b9);");
-    strcat(webbuff, "-webkit-border-radius:12;border-radius: 12px;font-family: Arial;color:#ffffff;font-size:20px;padding:");
+    strcat(webbuff, "</strong><p><input type=\"submit\" value=\"send\" style=\"background: #FDC03C;");
+    strcat(webbuff, "background-image:-webkit-linear-gradient(top, #FDC03C, #FDD43C);");
+    strcat(webbuff, "background-image:linear-gradient(to bottom, #FDC03C, #FDD43C);");
+    strcat(webbuff, "-webkit-border-radius:12;border-radius: 12px;font-family: Arial;color:#000000;font-size:20px;padding:");
     strcat(webbuff, "10px 20px 10px 20px; border:solid #103c57 3px;text-decoration: none;");
-    strcat(webbuff, "background: #3cb0fd;");
-    strcat(webbuff, "background-image:-webkit-linear-gradient(top,#3cb0fd,#1a5f8a);");
-    strcat(webbuff, "background-image:linear-gradient(to bottom,#3cb0fd,#1a5f8a);");
+    strcat(webbuff, "background: #FD9A3C;");
+    strcat(webbuff, "background-image:-webkit-linear-gradient(top,#FD9A3C,#8A7E1A);");
+    strcat(webbuff, "background-image:linear-gradient(to bottom,#FD9A3C,#8A7E1A);");
     strcat(webbuff, "text-decoration:none;\"></form></div></span>");
     strcat(webbuff, "</body></html>");
 // end of WEB page data
@@ -242,14 +240,9 @@ void ReadWebData()
 // Starts and restarts webserver if errors detected.
 void startserver()
 {
+
     if (strstr(replybuff, "OK") != NULL) {
         pc.printf("\n++++++++++ Starting Server ++++++++++\r\n");
-        strcpy(cmdbuff, "AT+CIPMUX=1\r\n");  // set multiple connections.
-        timeout=500;
-        getcount=20;
-        SendCMD();
-        getreply();
-        pc.printf(replybuff);
         sprintf(cmdbuff,"AT+CIPSERVER=1,%d\r\n", port);
         timeout=500;
         getcount=20;
@@ -327,6 +320,7 @@ void getreply()
 
 void WROOMconfig()
 {
+    
     wait(5);
     strcpy(cmdbuff,"AT\r\n");
     SendCMD();
@@ -334,6 +328,7 @@ void WROOMconfig()
     strcpy(cmdbuff,"AT\r\n");
     SendCMD();
     wait(1);
+    
     strcpy(cmdbuff,"AT\r\n");
     SendCMD();
     timeout=1;
